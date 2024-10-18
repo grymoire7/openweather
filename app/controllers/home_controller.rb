@@ -1,4 +1,4 @@
-require 'net/http'
+# Controller for home page
 
 class HomeController < ApplicationController
   # https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
