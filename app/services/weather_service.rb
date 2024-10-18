@@ -2,13 +2,12 @@
 # Provides weather data for a given zip code.
 
 class WeatherService
-
   OWM_API_KEY=Rails.application.credentials.dig(Rails.env.to_sym, :openweathermap, :api_key)
   COUNTRY_CODE="US"
   GEO_BASE_URL = "http://api.openweathermap.org/geo/1.0/zip"
   DATA_BASE_URL = "https://api.openweathermap.org/data/3.0/onecall"
 
-  def intialize(zip_code:, units: 'imperial')
+  def intialize(zip_code:, units: "imperial")
     @zip_code = zip_code
     @units = units
   end
@@ -41,9 +40,9 @@ class WeatherService
   # https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
   def data_uri
     return @data_uri if defined? @data_uri
-  
-    lon = coordinates['lon']
-    lat = coordinates['lat']
+
+    lon = coordinates["lon"]
+    lat = coordinates["lat"]
 
     @data_uri = URI(DATA_BASE_URL)
     params = { lat: lat, lon: lon, units: units, appid: OWM_API_KEY }
@@ -55,10 +54,11 @@ class WeatherService
   # http://api.openweathermap.org/geo/1.0/zip?zip={zip code},{country code}&appid={API key}
   def geo_uri
     return @geo_uri if defined? @geo_uri
-  
+
     @geo_uri = URI(GEO_BASE_URL)
     params = { zip: "#{zip_code},#{COUNTRY_CODE}", appid: OWM_API_KEY }
     @geo_uri.query = URI.encode_www_form(params)
 
     @geo_uri
   end
+end
