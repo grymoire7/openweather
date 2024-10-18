@@ -1,0 +1,10 @@
+<div>
+  <p><%=
+  # @data['current']['weather'].first['main']
+  %></p>
+</div>
+
+<div class="w-full text-center">
+  <%= Date.today.strftime('%A, %B %d, %Y') %>
+  <img class="mx-auto" src="<%= "http://openweathermap.org/img/wn/#{@data['current']['weather'].first['icon']}@2x.png" %>"/>
+</div>
