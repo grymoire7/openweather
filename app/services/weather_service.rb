@@ -21,7 +21,12 @@ class WeatherService
   attr_reader :units, :zip_code
 
   def weather
-    uri_result(data_uri)
+    results_cached = true
+    results = Rails.cache.fetch("weather/zip/#{zip_code}", exprires_in: 30.minutes) do
+      results_cached = false
+      uri_result(data_uri)
+    end
+    results.merge({ results_cached: results_cached })
   end
 
   def uri_result(uri)

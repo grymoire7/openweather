@@ -1,10 +1,8 @@
-<div>
-  <p><%=
-  # @data['current']['weather'].first['main']
-  %></p>
-</div>
-
 <div class="w-full text-center">
   <%= Date.today.strftime('%A, %B %d, %Y') %>
-  <img class="mx-auto" src="<%= "http://openweathermap.org/img/wn/#{@data['current']['weather'].first['icon']}@2x.png" %>"/>
+  <img class="mx-auto" src="<%= @weather.icon_url %>"/>
+  <p><%= @weather.status %></p>
+  <p class="text-xs"><%= @weather.description %></p>
+  <p><%= @weather.temperature %> F</p>
+  <p>Cached: <%= @weather.cached? %></p>
 </div>
