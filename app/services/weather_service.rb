@@ -7,7 +7,7 @@ class WeatherService
   GEO_BASE_URL = "http://api.openweathermap.org/geo/1.0/zip"
   DATA_BASE_URL = "https://api.openweathermap.org/data/3.0/onecall"
 
-  def intialize(zip_code:, units: "imperial")
+  def initialize(zip_code:, units: "imperial")
     @zip_code = zip_code
     @units = units
   end
