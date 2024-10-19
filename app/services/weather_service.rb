@@ -1,5 +1,5 @@
-# OpenWeatherMap.org weather service
-# Provides weather data for a given zip code.
+# The OpenWeatherMap.org weather service
+# provides weather data for a given zip code.
 
 class WeatherService
   OWM_API_KEY=Rails.application.credentials.dig(Rails.env.to_sym, :openweathermap, :api_key)
@@ -22,11 +22,18 @@ class WeatherService
 
   def weather
     results_cached = true
-    results = Rails.cache.fetch("weather/zip/#{zip_code}", exprires_in: 30.minutes) do
+    results = Rails.cache.fetch("weather/zip/#{zip_code}", exprires_in: 30.minutes, skip_nil: true) do
       results_cached = false
-      uri_result(data_uri)
+      combined_results
     end
     results.merge({ results_cached: results_cached })
+  end
+
+  def combined_results
+      weather_data = uri_result(data_uri)
+      geo_data = uri_result(geo_uri)
+      weather_data[:geo] = geo_data
+      weather_data
   end
 
   def uri_result(uri)
