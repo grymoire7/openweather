@@ -1,8 +1,17 @@
 <div class="w-full text-center">
-  <%= Date.today.strftime('%A, %B %d, %Y') %>
-  <img class="mx-auto" src="<%= @weather.icon_url %>"/>
-  <p><%= @weather.status %></p>
-  <p class="text-xs"><%= @weather.description %></p>
-  <p><%= @weather.temperature %> F</p>
-  <p>Cached: <%= @weather.cached? %></p>
+  <%= form_with url: root_path, method: :get, data: {'turbo-frame': 'weather'} do |form| %>
+    <%= form.label :q, "US address zip code" %>
+    <%= form.search_field :q, autofocus: true %>
+    <%= form.submit "Submit", class: "btn-primary" %>
+  <% end %>
+
+  <%= turbo_frame_tag :weather do %>
+    <%= Date.today.strftime('%A, %B %d, %Y') %>
+    <p><%= @weather.name %></p>
+    <img class="mx-auto" src="<%= @weather.icon_url %>"/>
+    <p><%= @weather.status %></p>
+    <p class="text-xs"><%= @weather.description %></p>
+    <p><%= @weather.temperature %> F</p>
+    <p>Cached: <%= @weather.cached? %></p>
+    <% end %>
 </div>

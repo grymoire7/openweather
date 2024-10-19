@@ -25,6 +25,10 @@ class Weather
     data[:results_cached]
   end
 
+  def name
+    data.dig(:geo, :name)
+  end
+
   private
 
   attr_reader :data
