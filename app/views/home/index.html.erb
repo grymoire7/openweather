@@ -1,17 +1,22 @@
+<h2>Weather Forecast</h2>
+
 <div class="w-full text-center">
-  <%= form_with url: root_path, method: :get, data: {'turbo-frame': 'weather'} do |form| %>
-    <%= form.label :q, "US address zip code" %>
-    <%= form.search_field :q, autofocus: true %>
-    <%= form.submit "Submit", class: "btn-primary" %>
+  <%= form_with url: root_path, method: :get, local: true do |form| %>
+    <%= form.label :address, "What is your address?" %>
+    <%= text_field_tag(:address, @address, size: 60) %>
+    <%= submit_tag "Submit", class: "btn-primary" %>
   <% end %>
 
-  <%= turbo_frame_tag :weather do %>
-    <%= Date.today.strftime('%A, %B %d, %Y') %>
-    <p><%= @weather.name %></p>
-    <img class="mx-auto" src="<%= @weather.icon_url %>"/>
-    <p><%= @weather.status %></p>
-    <p class="text-xs"><%= @weather.description %></p>
-    <p><%= @weather.temperature %> F</p>
-    <p>Cached: <%= @weather.cached? %></p>
-    <% end %>
+  <% if defined?(@weather) %>
+    <div class="w-full text-center">
+      <%= Date.today.strftime('%A, %B %d, %Y') %>
+      <p><%= @weather.name %></p>
+      <img class="mx-auto" src="<%= @weather.icon_url %>"/>
+      <p><%= @weather.status %></p>
+      <p class="text-xs"><%= @weather.description %></p>
+      <p>Current temperature: <%= @weather.temperature %> F</p>
+      <p>Low: <%= @weather.low %> F, High: <%= @weather.high %> F</p>
+      <p>Cached: <%= @weather.cached? %></p>
+    </div>
+  <% end %>
 </div>

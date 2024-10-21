@@ -3,12 +3,12 @@
 
 class WeatherService
   OWM_API_KEY=Rails.application.credentials.dig(Rails.env.to_sym, :openweathermap, :api_key)
-  COUNTRY_CODE="US"
-  GEO_BASE_URL = "http://api.openweathermap.org/geo/1.0/zip"
-  DATA_BASE_URL = "https://api.openweathermap.org/data/3.0/onecall"
+  WEATHER_BASE_URL = "https://api.openweathermap.org/data/3.0/onecall"
 
-  def initialize(zip_code:, units: "imperial")
-    @zip_code = zip_code
+  # @param zip_code [String] the target zip code for weather data
+  # @param units [String] one of "imperial", "standard", or "metric"
+  def initialize(address:, units: "imperial")
+    @address = address
     @units = units
   end
 
@@ -18,11 +18,16 @@ class WeatherService
 
   private
 
-  attr_reader :units, :zip_code
+  attr_reader :units, :zip_code, :geocoding, :address
 
   def weather
+    # {"latitude"=>{float}, "longitude"=>{float}, "country_code"=>{string}, "postal_code"=>{string}}
+    @geocoding = GeocodingService.call(@address)
+    puts "geocoding: #{@geocoding}"
+    zip = geocoding[:postal_code]
+
     results_cached = true
-    results = Rails.cache.fetch("weather/zip/#{zip_code}", exprires_in: 30.minutes, skip_nil: true) do
+    results = Rails.cache.fetch("weather/zip/#{zip}", exprires_in: 30.minutes, skip_nil: true) do
       results_cached = false
       combined_results
     end
@@ -30,47 +35,28 @@ class WeatherService
   end
 
   def combined_results
-      weather_data = uri_result(data_uri)
-      geo_data = uri_result(geo_uri)
-      weather_data[:geo] = geo_data
-      weather_data
+    response = weather_data_response
+    raise IOError.new("Weather service error: #{response.return_message}") if response.code != 200
+
+    weather_data = JSON.parse(response.body)
+    weather_data[:geo] = geocoding
+    puts "weather_data: #{weather_data}"
+
+    weather_data
   end
 
-  def uri_result(uri)
-    result = Net::HTTP.get_response(uri)
-    JSON.parse(result.body)
-  end
+  def weather_data_response
+    lon = geocoding[:longitude]
+    lat = geocoding[:latitude]
+    puts "geocoding: #{geocoding}"
+    exclude = "minutely,hourly"
 
-  # Example return value:
-  # {"zip"=>"68502", "name"=>"Lincoln", "lat"=>40.7893, "lon"=>-96.6938, "country"=>"US"}
-  def coordinates
-    return @coordinates if defined? @coordinates
-
-    @coordinates = uri_result(geo_uri)
-  end
-
-  # https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
-  def data_uri
-    return @data_uri if defined? @data_uri
-
-    lon = coordinates["lon"]
-    lat = coordinates["lat"]
-
-    @data_uri = URI(DATA_BASE_URL)
-    params = { lat: lat, lon: lon, units: units, appid: OWM_API_KEY }
-    @data_uri.query = URI.encode_www_form(params)
-
-    @data_uri
-  end
-
-  # http://api.openweathermap.org/geo/1.0/zip?zip={zip code},{country code}&appid={API key}
-  def geo_uri
-    return @geo_uri if defined? @geo_uri
-
-    @geo_uri = URI(GEO_BASE_URL)
-    params = { zip: "#{zip_code},#{COUNTRY_CODE}", appid: OWM_API_KEY }
-    @geo_uri.query = URI.encode_www_form(params)
-
-    @geo_uri
+    # https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
+    request = Typhoeus::Request.new(
+      WEATHER_BASE_URL,
+      method: :get,
+      params: { lat: lat, lon: lon, units: units, exclude: exclude, appid: OWM_API_KEY }
+    )
+    request.run
   end
 end

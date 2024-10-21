@@ -1,17 +1,20 @@
 # Controller for the home page.
 
 class HomeController < ApplicationController
-  # Our default zip code is Cupertino, a common default for mac users.
-  DEFAULT_ZIP_CODE = "95014"
+  # Our default address is Cupertino, a common default for mac users.
+  DEFAULT_ADDRESS = "1 Infinite Loop, Cupertino, CA 95014"
 
   def index
-    data = WeatherService.new(zip_code: zip_code).call
+    data = WeatherService.new(address: address).call
     @weather = Weather.new(data)
+  rescue StandardError => e
+    flash.now[:alert] = e.to_s
+    raise e
   end
 
   private
 
-  def zip_code
-    params[:q] || DEAFAULT_ZIP_CODE
+  def address
+    params[:address] || DEFAULT_ADDRESS
   end
 end
