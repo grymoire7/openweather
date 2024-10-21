@@ -2,7 +2,7 @@
 # provides weather data for a given zip code.
 
 class WeatherService
-  OWM_API_KEY=Rails.application.credentials.dig(Rails.env.to_sym, :openweathermap, :api_key)
+  OWM_API_KEY=Rails.application.credentials.dig(:development, :openweathermap, :api_key)
   WEATHER_BASE_URL = "https://api.openweathermap.org/data/3.0/onecall"
 
   # @param zip_code [String] the target zip code for weather data
@@ -16,14 +16,17 @@ class WeatherService
     weather
   end
 
+  def self.call(address:, units: "imperial")
+    weather = new(address: address, units: units)
+    weather.call
+  end
+
   private
 
   attr_reader :units, :zip_code, :geocoding, :address
 
   def weather
-    # {"latitude"=>{float}, "longitude"=>{float}, "country_code"=>{string}, "postal_code"=>{string}}
     @geocoding = GeocodingService.call(@address)
-    puts "geocoding: #{@geocoding}"
     zip = geocoding[:postal_code]
 
     results_cached = true
@@ -31,7 +34,7 @@ class WeatherService
       results_cached = false
       combined_results
     end
-    results.merge({ results_cached: results_cached })
+    results.merge({ results_cached: results_cached }).with_indifferent_access
   end
 
   def combined_results
@@ -40,7 +43,6 @@ class WeatherService
 
     weather_data = JSON.parse(response.body)
     weather_data[:geo] = geocoding
-    puts "weather_data: #{weather_data}"
 
     weather_data
   end
@@ -48,7 +50,6 @@ class WeatherService
   def weather_data_response
     lon = geocoding[:longitude]
     lat = geocoding[:latitude]
-    puts "geocoding: #{geocoding}"
     exclude = "minutely,hourly"
 
     # https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
