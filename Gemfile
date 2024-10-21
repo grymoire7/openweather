@@ -53,5 +53,9 @@ group :development do
   gem "web-console"
 end
 
+# Use geocoder to get lattitude, longitude, etc. from an address
+gem "geocoder"
 
 gem "tailwindcss-rails", "~> 3.0"
+
+gem "typhoeus", "~> 1.4"
