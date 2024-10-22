@@ -5,11 +5,9 @@ class HomeController < ApplicationController
   DEFAULT_ADDRESS = "1 Infinite Loop, Cupertino, CA 95014"
 
   def index
-    data = WeatherService.call(address: address)
-    @weather = Weather.new(data)
+    @weather = Weather.new(address: address)
   rescue StandardError => e
     flash.now[:alert] = e.to_s
-    # raise e
   end
 
   private

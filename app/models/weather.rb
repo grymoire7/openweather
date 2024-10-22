@@ -1,11 +1,12 @@
 # Presentation model for weather api data (not ActiveRecord)
 
 class Weather
-  def initialize(data)
-    @data = data.with_indifferent_access
+  def initialize(address:)
+    @data = WeatherService.call(address: address)
+    puts "Weather data: #{@data}"
   end
 
-  def icon_url    = "http://openweathermap.org/img/wn/#{current_weather['icon']}@2x.png"
+  def icon_url    = data[:icon_url]
   def status      = current_weather[:main]
   def description = current_weather[:description]
   def temperature = data.dig(:current, :temp)

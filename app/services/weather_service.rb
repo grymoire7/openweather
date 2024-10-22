@@ -4,6 +4,7 @@
 class WeatherService
   OWM_API_KEY=Rails.application.credentials.dig(:development, :openweathermap, :api_key)
   WEATHER_BASE_URL = "https://api.openweathermap.org/data/3.0/onecall"
+  CURRENT_ICON_BASE_URL = "http://openweathermap.org/img/wn"
 
   # @param zip_code [String] the target zip code for weather data
   # @param units [String] one of "imperial", "standard", or "metric"
@@ -43,8 +44,14 @@ class WeatherService
 
     weather_data = JSON.parse(response.body)
     weather_data[:geo] = geocoding
+    weather_data[:icon_url] = current_weather_icon(weather_data)
 
     weather_data
+  end
+
+  def current_weather_icon(weather_data)
+    current_weather = weather_data["current"]["weather"].first
+    "#{CURRENT_ICON_BASE_URL}/#{current_weather['icon']}@2x.png"
   end
 
   def weather_data_response
