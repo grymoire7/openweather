@@ -9,7 +9,7 @@ class HomeController < ApplicationController
     @weather = Weather.new(data)
   rescue StandardError => e
     flash.now[:alert] = e.to_s
-    raise e
+    # raise e
   end
 
   private
