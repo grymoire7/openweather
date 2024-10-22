@@ -13,14 +13,16 @@
 </div>
 
 <% if defined?(@weather) %>
-  <div class="text-center">
-    <%= Date.today.strftime('%A, %B %d, %Y') %>
-    <p><%= @weather.name %></p>
-    <img src="<%= @weather.icon_url %>"/>
-    <p><%= @weather.status %></p>
-    <p><%= @weather.description %></p>
-    <p>Current temperature: <%= @weather.temperature %> F</p>
-    <p>Low: <%= @weather.low %> F, High: <%= @weather.high %> F</p>
-    <p>Cached: <%= @weather.cached? %></p>
+  <div class="card mx-auto text-center" style="width: 24rem;">
+    <div class="card-body">
+      <h5 class="card-title"><%= Date.today.strftime('%A, %B %d, %Y') %></h5>
+      <h6 class="card-subtitle mb-2 text-muted"><%= @weather.name %></h6>
+      <img src="<%= @weather.icon_url %>"/>
+      <p><%= @weather.status %></p>
+      <p><%= @weather.description %></p>
+      <p>Current temperature: <%= @weather.temperature %> F</p>
+      <p>Low: <%= @weather.low %> F, High: <%= @weather.high %> F</p>
+      <p>Cached: <%= @weather.cached? %></p>
+    </div>
   </div>
 <% end %>
