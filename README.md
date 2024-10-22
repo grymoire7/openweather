@@ -16,3 +16,6 @@ Rails.cache.
 
 Rspec is used for testing. The tests are located in the spec folder and can be
 run with the command `bundle exec rspec`.
+
+<br/>
+<img width="1290" alt="screenshot" src="https://github.com/user-attachments/assets/da330fe6-ef08-4685-b3b6-7e64d955ee32">
