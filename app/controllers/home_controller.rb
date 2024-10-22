@@ -16,6 +16,6 @@ class HomeController < ApplicationController
   private
 
   def address
-    params[:address] || DEFAULT_ADDRESS
+    @address = params[:address] || DEFAULT_ADDRESS
   end
 end

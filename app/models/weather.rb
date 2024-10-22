@@ -17,10 +17,11 @@ class Weather
   def feels_like  = data.dig(:current, :feels_like)
   def humidity    = data.dig(:current, :humidity)
   def wind_speed  = data.dig(:current, :wind_speed)
-  def cached?     = data[:results_cached]
   def name        = data.dig(:geo, :name)
   def latitude    = data.dig(:geo, :latitude)
   def longitude   = data.dig(:geo, :longitude)
+  def weather_cached?   = data[:results_cached]
+  def geocoding_cached? = data.dig(:geo, :results_cached)
 
   private
 
