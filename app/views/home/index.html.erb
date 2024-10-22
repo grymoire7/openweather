@@ -1,26 +1,24 @@
-<h2 class="text-xl font-semibold">Weather Forecast</h2>
-
-<div class="flex items-center justify-center">
-  <div class="max-w-sm text-center bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-    <%= form_with url: root_path, method: :get, local: true do |form| %>
-      <div class="mb-4">
-        <%= form.label :address, "What is your address?", class: "form-label" %>
-        <%= text_field_tag(:address, @address, size: 30, class: "form-input") %>
+<div class="text-center">
+  <%= form_with url: root_path, method: :get, local: true do |form| %>
+    <div class="form-group row mb-3">
+      <%= form.label :address, "What is your address?", class: "col-sm-2 col-form-label" %>
+      <div class="col-sm-10">
+        <%= text_field_tag(:address, @address, size: 30, class: "form-control") %>
       </div>
-      <div class="mb-6">
-        <%= submit_tag "Submit", class: "btn-primary" %>
-      </div>
-    <% end %>
-  </div>
+    </div>
+    <div class="mb-5">
+      <%= submit_tag "Submit", class: "btn btn-primary" %>
+    </div>
+  <% end %>
 </div>
 
 <% if defined?(@weather) %>
-  <div class="w-full text-center">
+  <div class="text-center">
     <%= Date.today.strftime('%A, %B %d, %Y') %>
     <p><%= @weather.name %></p>
-    <img class="mx-auto" src="<%= @weather.icon_url %>"/>
+    <img src="<%= @weather.icon_url %>"/>
     <p><%= @weather.status %></p>
-    <p class="text-xs"><%= @weather.description %></p>
+    <p><%= @weather.description %></p>
     <p>Current temperature: <%= @weather.temperature %> F</p>
     <p>Low: <%= @weather.low %> F, High: <%= @weather.high %> F</p>
     <p>Cached: <%= @weather.cached? %></p>
