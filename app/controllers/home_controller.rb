@@ -1,4 +1,7 @@
-# Controller for the home page.
+# This a thin controller for the home page.
+# It uses the Weather model to fetch weather data for a given address.
+#
+# see models/weather.rb
 
 class HomeController < ApplicationController
   # Our default address is Cupertino, a common default for mac users.

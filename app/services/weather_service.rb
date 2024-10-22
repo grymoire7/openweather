@@ -1,5 +1,9 @@
-# The OpenWeatherMap.org weather service
-# provides weather data for a given zip code.
+# This service fetches weather data for a given address.
+# The service uses the GeocodingService to get the latitude and longitude for the address.
+# The service then uses the OpenWeatherMap.org API to get the weather data for the latitude and longitude.
+# The service caches the weather data for 30 minutes.
+#
+# @see GeocodingService
 
 class WeatherService
   OWM_API_KEY=Rails.application.credentials.dig(:development, :openweathermap, :api_key)

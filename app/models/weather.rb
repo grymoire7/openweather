@@ -1,4 +1,6 @@
 # Presentation model for weather api data (not ActiveRecord)
+#
+# @see WeatherService
 
 class Weather
   def initialize(address:)

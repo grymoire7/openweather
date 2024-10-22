@@ -1,3 +1,9 @@
+# The GeocodingService class is responsible for fetching the latitude, longitude,
+# zip code, and other data of a given address.
+# It uses the Geocoder gem with the geoapify API to do this.
+#
+# @see config/initializers/geocoder.rb
+
 class GeocodingService
   def self.call(address)
     response = Geocoder.search(address)
