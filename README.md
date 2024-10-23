@@ -14,8 +14,15 @@ requests to the OpenWeatherMap API.
 There is no database for this application. The cache is stored in memory using
 Rails.cache.
 
-Rspec is used for testing. The tests are located in the spec folder and can be
+To run the application, clone the repository and run `bundle install` to install
+the required gems. Then run `./bin/dev` to start the server. The application can
+be accessed at `http://localhost:3000`.  Use `rails dev:cache` to toggle the cache.
+
+Rspec is used for testing. The tests are located in the `spec` folder and can be
 run with the command `bundle exec rspec`.
+
+Note: You will also need to set the environment variable `RAILS_MASTER_KEY` to
+the value provided in the email.
 
 <br/>
 <img width="1235" alt="screenshot" src="https://github.com/user-attachments/assets/8fc5a03e-7745-44c7-b60c-4d544c1a2eec">
