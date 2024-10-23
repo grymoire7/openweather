@@ -17,11 +17,15 @@
     <div class="card-body">
       <h5 class="card-title"><%= Date.today.strftime('%A, %B %d, %Y') %></h5>
       <h6 class="card-subtitle mb-2 text-muted"><%= @weather[:name] %></h6>
+      <h6 class="card-subtitle mb-2 text-muted">
+        <%= sprintf("%.3f", @weather[:latitude]) %>,
+        <%= sprintf("%.3f", @weather[:longitude]) %>
+      </h6>
       <img src="<%= @weather[:icon_url] %>"/>
-      <p><%= @weather[:status] %></p>
-      <p><%= @weather[:description] %></p>
+      <p><%= @weather[:status] %>: <%= @weather[:description] %></p>
       <p>Current temperature: <%= @weather[:temperature] %> F</p>
       <p>Low: <%= @weather[:low] %> F, High: <%= @weather[:high] %> F</p>
+      <p>Humidity: <%= @weather[:humidity] %>%</p>
       <p>Weather data cached: <%= @weather[:weather_cached] %></p>
       <p>Geocoding data cached: <%= @weather[:geocoding_cached] %></p>
     </div>

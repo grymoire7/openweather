@@ -7,29 +7,19 @@ RSpec.describe WeatherService do
 
     it "returns a hash with weather data" do
       expect(weather_data).to include(
-        geo: be_a(Hash),
-        daily: be_an(Array).and(
-          have_attributes(
-            first: include(
-              temp: include(
-                max: be_a(Float),
-                min: be_a(Float)
-              )
-            )
-          )
-        ),
-        current: include(
-          temp: be_a(Float),
-          feels_like: be_a(Float),
-          weather: include(a_hash_including(
-            main: be_a(String),
-            description: be_a(String),
-            icon: be_a(String)
-          ))
-        ),
-        lat: be_a(Float),
-        lon: be_a(Float),
-        results_cached: be_in([ true, false ])
+        icon_url: be_a(String),
+        status:            be_a(String),
+        description:       be_a(String),
+        temperature:       be_a(Float),
+        high:              be_a(Float),
+        low:               be_a(Float),
+        feels_like:        be_a(Float),
+        humidity:          be_a(Integer),
+        name:              be_a(String),
+        latitude:          be_a(Float),
+        longitude:         be_a(Float),
+        weather_cached:    be_in([ true, false ]),
+        geocoding_cached:  be_in([ true, false ])
       )
     end
 

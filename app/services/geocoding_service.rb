@@ -5,14 +5,18 @@
 # @see config/initializers/geocoder.rb
 
 class GeocodingService
+  # Fetches geocoding data for a given address.
+  #
+  # @param address [String] the target address for geocoding data
+  # @return [Hash] the geocoding data for the address
   def self.call(address)
     results_cached = true
     results = Rails.cache.fetch("geocoder/address/#{address}", exprires_in: 30.minutes, skip_nil: true) do
       results_cached = false
 
       response = Geocoder.search(address)
-      response or raise IOError.new "Geocoder error"
-      response.length > 0 or raise IOError.new "Geocoder is empty"
+      response or raise IOError.new "Cannot reach geocoding service"
+      response.length > 0 or raise IOError.new "Address not found"
 
       data = response.first.data["properties"]
       data or raise IOError.new "Geocoder data error"
@@ -24,13 +28,13 @@ class GeocodingService
       data["postcode"] or raise IOError.new "Geocoder postal code is missing"
 
       {
-        latitude: data["lat"].to_f,
-        longitude: data["lon"].to_f,
-        city: data["city"],
-        state: data["state"],
-        name: data["city"] + ", " + data["state"],
+        latitude:     data["lat"].to_f,
+        longitude:    data["lon"].to_f,
+        city:         data["city"],
+        state:        data["state"],
+        name:         data["city"] + ", " + data["state"],
         country_code: data["country_code"],
-        postal_code: data["postcode"]
+        postal_code:  data["postcode"]
       }.with_indifferent_access
     end
     results.merge({ results_cached: results_cached }).with_indifferent_access

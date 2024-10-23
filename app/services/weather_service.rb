@@ -27,7 +27,7 @@ class WeatherService
       weather_data = fetch_weather_data(geocoding_data[:longitude], geocoding_data[:latitude])
       selected_results(weather_data, geocoding_data)
     end
-    results.merge({ results_cached: results_cached }).with_indifferent_access
+    results.merge({ weather_cached: results_cached }).with_indifferent_access
   end
 
   private
@@ -48,12 +48,11 @@ class WeatherService
       temperature:       weather_data.dig(:current, :temp),
       high:              weather_data[:daily].first[:temp][:max],
       low:               weather_data[:daily].first[:temp][:min],
-      feels_like:        weather_data.dig(:current, :feels_like),
       humidity:          weather_data.dig(:current, :humidity),
       name:              geocoding_data[:name],
       latitude:          geocoding_data[:latitude],
       longitude:         geocoding_data[:longitude],
-      weather_cached:    weather_data[:results_cached],
+      # weather_cached:  Added to the hash in the cache block
       geocoding_cached:  geocoding_data[:results_cached]
     }
   end
