@@ -16,14 +16,14 @@
   <div class="card mx-auto text-center" style="width: 24rem;">
     <div class="card-body">
       <h5 class="card-title"><%= Date.today.strftime('%A, %B %d, %Y') %></h5>
-      <h6 class="card-subtitle mb-2 text-muted"><%= @weather.name %></h6>
-      <img src="<%= @weather.icon_url %>"/>
-      <p><%= @weather.status %></p>
-      <p><%= @weather.description %></p>
-      <p>Current temperature: <%= @weather.temperature %> F</p>
-      <p>Low: <%= @weather.low %> F, High: <%= @weather.high %> F</p>
-      <p>Weather data cached: <%= @weather.weather_cached? %></p>
-      <p>Geocoding data cached: <%= @weather.geocoding_cached? %></p>
+      <h6 class="card-subtitle mb-2 text-muted"><%= @weather[:name] %></h6>
+      <img src="<%= @weather[:icon_url] %>"/>
+      <p><%= @weather[:status] %></p>
+      <p><%= @weather[:description] %></p>
+      <p>Current temperature: <%= @weather[:temperature] %> F</p>
+      <p>Low: <%= @weather[:low] %> F, High: <%= @weather[:high] %> F</p>
+      <p>Weather data cached: <%= @weather[:weather_cached] %></p>
+      <p>Geocoding data cached: <%= @weather[:geocoding_cached] %></p>
     </div>
   </div>
 <% end %>
