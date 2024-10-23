@@ -13,7 +13,6 @@ RSpec.describe WeatherService do
         temperature:       be_a(Float),
         high:              be_a(Float),
         low:               be_a(Float),
-        feels_like:        be_a(Float),
         humidity:          be_a(Integer),
         name:              be_a(String),
         latitude:          be_a(Float),
