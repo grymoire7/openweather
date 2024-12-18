@@ -1,3 +1,6 @@
+class WeatherServiceError < StandardError; end
+
+# WeatherService
 # This service fetches weather data for a given address.
 # The service uses the GeocodingService to get the latitude and longitude for the address.
 # The service then uses the OpenWeatherMap.org API to get the weather data for the latitude and longitude.
@@ -74,7 +77,7 @@ class WeatherService
       params: { lat: lat, lon: lon, units: TEMP_UNITS, exclude: exclude, appid: OWM_API_KEY }
     )
     response = request.run
-    raise IOError.new("Weather service error: #{response.return_message}") if response.code != 200
+    raise WeatherServiceError.new("Weather service error: #{response.return_message}") if response.code != 200
 
     JSON.parse(response.body, symbolize_names: true).with_indifferent_access
   end
