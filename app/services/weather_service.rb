@@ -22,7 +22,7 @@ class WeatherService
     zip = geocoding_data[:postal_code]
 
     results_cached = true
-    results = Rails.cache.fetch("weather/zip/#{zip}", exprires_in: 30.minutes, skip_nil: true) do
+    results = Rails.cache.fetch("weather/zip/#{zip}", expires_in: 30.minutes, skip_nil: true) do
       results_cached = false
       weather_data = fetch_weather_data(geocoding_data[:longitude], geocoding_data[:latitude])
       selected_results(weather_data, geocoding_data)
@@ -37,9 +37,9 @@ class WeatherService
 
   # Combines selected weather and geocoding data into a single hash.
   #
-  # @params: weather_data [Hash] the weather data from the OpenWeatherMap API
-  # @params: geocoding_data [Hash] the geocoding data from the GeocodingService
-  # @returns: [Hash] selected data from the weather and geocoding data
+  # @param weather_data [Hash] the weather data from the OpenWeatherMap API
+  # @param geocoding_data [Hash] the geocoding data from the GeocodingService
+  # @return [Hash] selected data from the weather and geocoding data
   def self.selected_results(weather_data, geocoding_data)
     current_weather = weather_data[:current][:weather].first
     icon_base = current_weather[:icon]
@@ -62,9 +62,9 @@ class WeatherService
 
   # Fetches weather data from the OpenWeatherMap API.
   #
-  # @params: lon [Float] the longitude of the target location
-  # @params: lat [Float] the latitude of the target location
-  # @returns: [Hash] the weather data from the OpenWeatherMap API
+  # @param lon [Float] the longitude of the target location
+  # @param lat [Float] the latitude of the target location
+  # @return [Hash] the weather data from the OpenWeatherMap API
   def self.fetch_weather_data(lon, lat)
     exclude = "minutely,hourly"
 
