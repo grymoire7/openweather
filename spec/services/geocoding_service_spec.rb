@@ -4,8 +4,8 @@ GeocoderResult = Struct.new(:data)
 
 RSpec.describe GeocodingService do
   describe ".call" do
-    before do
-      geocoder_result = GeocoderResult.new(
+    let(:geocoder_result) do
+      GeocoderResult.new(
         {
           "properties" => {
             "lat" => 37.33182,
@@ -17,7 +17,9 @@ RSpec.describe GeocodingService do
           }
         }
       )
+    end
 
+    before do
       allow(Geocoder).to receive(:search).and_return([ geocoder_result ])
     end
 
