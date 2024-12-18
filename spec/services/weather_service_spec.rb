@@ -17,19 +17,19 @@ RSpec.describe WeatherService do
 
       allow(WeatherService).to receive(:fetch_weather_data).and_return(
         {
-          daily: [{
+          daily: [ {
             temp: {
               max: 75.0,
               min: 65.0
             }
-          }],
+          } ],
           current: {
             humidity: 50,
             temp: 72.5,
-            weather: [{
+            weather: [ {
               main: "Clear",
               description: "clear sky"
-            }]
+            } ]
           }
         }
       )
